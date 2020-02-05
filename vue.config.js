@@ -1,4 +1,8 @@
 module.exports = {
+  publicPath: process.env.NODE_ENV === 'production'
+  ? './'
+  : '/',
+  
   devServer: {
     proxy: {
       '/api': {
@@ -17,5 +21,5 @@ module.exports = {
     externals: {
       "BMap": "BMap"
     }
-  }
+  },
 }
