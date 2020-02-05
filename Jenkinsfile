@@ -4,7 +4,7 @@ pipeline {
     stage('检出') {
       steps {
         checkout([$class: 'GitSCM', branches: [[name: env.GIT_BUILD_REF]], 
-                                                                                                                                                                                                                                                                            userRemoteConfigs: [[url: env.GIT_REPO_URL, credentialsId: env.CREDENTIALS_ID]]])
+                                                                                                                                                                                                                                                                                            userRemoteConfigs: [[url: env.GIT_REPO_URL, credentialsId: env.CREDENTIALS_ID]]])
       }
     }
     stage('构建') {
@@ -37,15 +37,16 @@ ls'''
     stage('部署') {
       steps {
         echo '部署中...'
-        sh '''git clone https://$MYGIT_USR:"$MYGIT_PSW"@e.coding.net:mmnn/house-web.git
+        sh '''git clone https://${USER}:"${PWD}"@e.coding.net:mmnn/house-web.git
 \\cp -r dist/* house-web/
 cd house-web
-git push https://$MYGIT_USR:"$MYGIT_PSW"@e.coding.net:mmnn/house-web.git'''
+git push https://${USER}:"${PWD}"@e.coding.net:mmnn/house-web.git'''
         echo '部署完成'
       }
     }
   }
   environment {
-    MYGIT = credentials('fa62c2d3-842d-4b0a-a94f-e173748ea809')
+    USER = '3788837@qq.com'
+    PWD = '3788837'
   }
 }
