@@ -1,21 +1,18 @@
 pipeline {
-  agent {
-    docker {
-      image 'ebiven/vue-cli'
-    }
-
-  }
+  agent any
   stages {
     stage('检出') {
       steps {
         checkout([$class: 'GitSCM', branches: [[name: env.GIT_BUILD_REF]], 
-                                                                                                            userRemoteConfigs: [[url: env.GIT_REPO_URL, credentialsId: env.CREDENTIALS_ID]]])
+                                                                                                                            userRemoteConfigs: [[url: env.GIT_REPO_URL, credentialsId: env.CREDENTIALS_ID]]])
       }
     }
     stage('构建') {
       steps {
         echo '构建中...'
-        sh '''docker version
+        sh '''npm install -g cnpm --registry=https://registry.npm.taobao.org
+cnpm install -g vue-cli
+docker version
 npm version
 npm run build
 ls'''
