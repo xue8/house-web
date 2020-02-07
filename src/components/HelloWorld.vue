@@ -401,7 +401,6 @@
       },
       locationBlur() {
         this.nearby.centerAddr = this.nearby.address + this.nearby.location;
-        window.console.log(this.nearby.centerAddr);
       },
       // // 计算距离的过滤器
       // distance(a) {
