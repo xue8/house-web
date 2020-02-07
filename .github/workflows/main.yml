@@ -25,14 +25,24 @@ jobs:
     - name: Build web with npm
       run: npm run build
     - name: Deploy web to server
-      uses: easingthemes/ssh-deploy@v2.0.7
+      uses: AEnterprise/rsync-deploy@v1.0
       env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_SERVER_SSH_KEY }}
-          ARGS: "-rltgoDzvO --delete"
-          SOURCE: "target"
-          REMOTE_HOST: ${{ secrets.ALIYUN_SERVER_HOST }}
-          REMOTE_USER: ${{ secrets.ALIYUN_SERVER_USER }}
-          TARGET: "/www/web.fang.ddnd.cn/"
+        DEPLOY_KEY: ${{ secrets.SSH_SERVER_SSH_KEY }}
+        ARGS: "-e -c -r --delete"
+        SERVER_PORT: "22"
+        FOLDER: "target"
+        SERVER_IP: ${{ secrets.ALIYUN_SERVER_HOST }}
+        USERNAME: ${{ secrets.ALIYUN_SERVER_USER }}
+        SERVER_DESTINATION: "/www/web.fang.ddnd.cn/"
+#     - name: Deploy web to server
+#       uses: easingthemes/ssh-deploy@v2.0.7
+#       env:
+#           SSH_PRIVATE_KEY: ${{ secrets.SSH_SERVER_SSH_KEY }}
+#           ARGS: "-rltgoDzvO --delete"
+#           SOURCE: "target"
+#           REMOTE_HOST: ${{ secrets.ALIYUN_SERVER_HOST }}
+#           REMOTE_USER: ${{ secrets.ALIYUN_SERVER_USER }}
+#           TARGET: "/www/web.fang.ddnd.cn/"
 #     - name: Deploy web to github page
 #       uses: JamesIves/github-pages-deploy-action@releases/v3
 #       with:
