@@ -22,8 +22,12 @@ module.exports = {
   //   disableHostCheck: true,
   // },
   configureWebpack: {
+    // module同目录加上此配置，打包的时候忽略这些
     externals: {
-      "BMap": "BMap"
+      "BMap": "BMap",
+      'vue': 'Vue',
+      'element-ui': 'ELEMENT',
+      'vue-router': 'VueRouter',
     },
     plugins: [
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
