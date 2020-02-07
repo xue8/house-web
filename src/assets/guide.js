@@ -57,14 +57,14 @@ const steps = [
         position: "bottom"
       }
     },
-    // {
-    //   element: ".el-table_3_column_13",
-    //   popover: {
-    //     title: "房源",
-    //     description: "点击按钮，列出房源信息。",
-    //     position: "bottom"
-    //   }
-    // },
+    {
+      element: ".house-btn",
+      popover: {
+        title: "房源",
+        description: "点击按钮，列出房源信息。",
+        position: "bottom"
+      }
+    },
     {
       element: ".result-right",
       popover: {

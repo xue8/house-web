@@ -6,7 +6,7 @@
           <el-cascader :options="pcaData" :props="pcaProps" @change="search" clearable>
           </el-cascader>
         </el-form-item>
-        <el-form-item label="关键字" id="keyword" prop="keyword">
+        <el-form-item label="关键字" id="keyword" prop="location">
           <el-input placeholder="区域/小区名/公交车站名" suffix-icon="el-icon-date" v-model="nearby.location"
             @blur="locationBlur">
           </el-input>
@@ -33,7 +33,7 @@
       <el-button type="warning" @click="guide" size="medium" icon="el-icon-video-play">使用引导</el-button>
       <br>
       <br>
-      <el-tag type="warning" style="height: 90px">最近在找房子，想租公司附近小区的房子，但是想要知道公司附近有哪些小区，
+      <el-tag type="warning" style="height: 95px" class="tag-tip">最近在找房子，想租公司附近小区的房子，但是想要知道公司附近有哪些小区，
         通过百度地图一个一个找出来然后再根据小区去查找房源太麻烦了，另外还有就是因为公司附近的小区
         <br>
         房价太高（且房子面积小），所以我倾向于租公司大巴经过的公交车站附近小区的房子，所以也就需要
@@ -42,7 +42,7 @@
       </el-tag>
       <br>
       <br>
-      <el-tag>关键字尽量使用街道名，比如想要搜索腾讯大厦的，则写腾讯大厦的街道号：深南大道10000号，提高精度。</el-tag>
+      <el-tag class="tag-tip">关键字尽量使用街道名，比如想要搜索腾讯大厦的，则写腾讯大厦的街道号：深南大道10000号，提高精度。</el-tag>
     </div>
 
     <baidu-map class="bm-view" :center="nearby.centerAddr">
@@ -58,23 +58,23 @@
       <!-- 搜索结果列表 -->
       <div class="result-left">
         <el-table :data="searchResult" style="width: 100%" v-loading="searchTableLoading">
-          <el-table-column prop="name" label="小区名" width="180">
+          <el-table-column prop="name" label="小区名">
           </el-table-column>
           <el-table-column prop="address" label="地址">
           </el-table-column>
           <el-table-column prop="detailInfo.distance" label="距离(米)">
           </el-table-column>
-          <el-table-column label="房源" align="center" fixed="right">
+          <el-table-column label="房源" align="center" fixed="right" width="110px" class-name="house-btn">
             <template slot-scope="scope">
               <el-button type="primary" size="small" icon="el-icon-search" @click="house(scope.row)">贝壳找房</el-button>
-              <el-button type="primary" size="small" icon="el-icon-search" @click="ziroomHouse(scope.row)">自如
+              <el-button type="primary" size="small" icon="el-icon-search" @click="ziroomHouse(scope.row)" style="margin-top: 5px">自如
               </el-button>
             </template>
           </el-table-column>
         </el-table>
         <div class="block">
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-            :current-page.sync="currentPage" :page-size="pageSize" layout="total, prev, pager, next, jumper"
+            :current-page.sync="currentPage" :page-size="pageSize" layout="total, prev, pager, next"
             :total="totalCount">
           </el-pagination>
         </div>
@@ -100,7 +100,7 @@
         </el-form>
         <div style="max-height: 545px;overflow-y: auto;">
           <el-table :data="houseSearchResult" style="width: 100%" v-loading="houseTableLoading">
-            <el-table-column label="名称" width="120">
+            <el-table-column label="名称">
               <template slot-scope="scope">
                 <el-link type="primary" :href="scope.row.url" target="view_window">{{ scope.row.name }}</el-link>
               </template>
@@ -117,7 +117,7 @@
         </div>
         <div class="block">
           <el-pagination @size-change="houseHandleSizeChange" @current-change="houseHandleCurrentChange"
-            :current-page.sync="houseCurrentPage" :page-size="housePageSize" layout="total, prev, pager, next, jumper"
+            :current-page.sync="houseCurrentPage" :page-size="housePageSize" layout="total, prev, pager, next"
             :total="houseTotalCount">
           </el-pagination>
         </div>
@@ -209,26 +209,26 @@
         driver: null,
         // 匹配规则
         rules: {
-          pca: [{
-            required: true,
-            message: '请选择城市',
-            trigger: 'blur'
-          }],
-          keyword: [{
-            required: true,
-            message: '请输入关键字',
-            trigger: 'blur'
-          }],
-          xy: [{
-            required: true,
-            message: '请选择坐标类型',
-            trigger: 'blur'
-          }],
-          radius: [{
-            required: true,
-            message: '请输入范围',
-            trigger: 'blur'
-          }],
+          // pca: [{
+          //   required: true,
+          //   message: '请选择城市',
+          //   trigger: 'blur'
+          // }],
+          // location: [{
+          //   required: true,
+          //   message: '请输入关键字',
+          //   trigger: 'blur'
+          // }],
+          // xy: [{
+          //   required: true,
+          //   message: '请选择坐标类型',
+          //   trigger: 'blur'
+          // }],
+          // radius: [{
+          //   required: true,
+          //   message: '请输入范围',
+          //   trigger: 'blur'
+          // }],
         },
       }
     },
@@ -271,10 +271,12 @@
       },
       // 开始检索
       start() {
-        if (this.nearby.location == null || this.nearby.address == null || this.coordTypeValue == null || this.nearby
-          .radius == null) {
+        if (this.nearby.location == null || this.nearby.location == ''
+            || this.nearby.address == null || this.nearby.address == ''
+            || this.coordTypeValue == null || this.coordTypeValue == ''
+            || this.nearby.radius == null || this.nearby.radius == '') {
           this.$message.error({
-            message: "输入信息不正确，请检查输入！",
+            message: "输入信息不完整，请检查输入！",
             showClose: true
           });
           return;
@@ -457,13 +459,35 @@
     height: 300px;
   }
 
-  .result-left {
-    width: 60%;
-    float: left;
+  @media screen and (max-width: 500px) { 
+    .result-left {
+      width: 100%;
+      /* float: left; */
+    }
+
+    .result-right {
+      margin-top: 15px;
+      width: 100%;
+      /* float: right; */
+    }
+  } 
+
+  @media screen and (min-width: 501px) { 
+    .result-left {
+      width: 52%;
+      float: left;
+    }
+
+    .result-right {
+      width: 45%;
+      float: right;
+    }
+  } 
+
+  
+  .tag-tip {
+    max-width:  100%;
+    overflow-x: auto;
   }
 
-  .result-right {
-    width: 38%;
-    float: right;
-  }
 </style>
