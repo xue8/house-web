@@ -294,7 +294,7 @@
                 lat: point.lat,
               }
               var location = point.lat + ',' + point.lng;
-              _this.$axios.get('http://127.0.0.1:8090/map/search' + '?query=' + _this.searchTypeValue +
+              _this.$axios.get('api/map/search' + '?query=' + _this.searchTypeValue +
                   '&location=' + location +
                   '&radius=' + _this.nearby.radius + '&pageNum=' + _this.currentPage + "&coordType=" + _this
                   .coordTypeValue)
@@ -338,7 +338,7 @@
             url += "&lt=" + this.searchForm.lt;
           }
         }
-        this.$axios.get('http://127.0.0.1:8090/house/search' + url)
+        this.$axios.get('api/house/search' + url)
           .then(response => {
             if (response.data.code === 200) {
               this.houseSearchResult = response.data.result;
@@ -374,7 +374,7 @@
             url += "&lt=" + this.searchForm.lt;
           }
         }
-        this.$axios.get('http://127.0.0.1:8090/house/ziroomSearch' + url)
+        this.$axios.get('api/house/ziroomSearch' + url)
           .then(response => {
             if (response.data.code === 200) {
               this.houseSearchResult = response.data.result;
