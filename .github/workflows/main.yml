@@ -1,4 +1,4 @@
-name: Deploy to github page
+name: Deploy to github pages
 
 on: [push]
 
@@ -24,9 +24,18 @@ jobs:
         CI: true
     - name: Build web with npm
       run: npm run build
-    - name: Deploy web to github page
-      uses: JamesIves/github-pages-deploy-action@releases/v3
-      with:
-        ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
-        BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: dist # The folder the action should deploy.
+    - name: Deploy web to server
+      uses: easingthemes/ssh-deploy@v2.0.7
+      env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_SERVER_SSH_KEY }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "target"
+          REMOTE_HOST: ${{ secrets.ALIYUN_SERVER_HOST }}
+          REMOTE_USER: ${{ secrets.ALIYUN_SERVER_USER }}
+          TARGET: "/www/web.fang.ddnd.cn/"
+#     - name: Deploy web to github page
+#       uses: JamesIves/github-pages-deploy-action@releases/v3
+#       with:
+#         ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+#         BRANCH: gh-pages # The branch the action should deploy to.
+#         FOLDER: dist # The folder the action should deploy.
